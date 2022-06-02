@@ -1,0 +1,124 @@
+[tool.poetry]
+name = "tw_hooks"
+version = "0.1.0"
+description = "Collection of Taskwarrior hooks"
+authors = ["Nikos Koukis <nickkouk@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/bergercookie/tw-hooks"
+repository = "https://github.com/bergercookie/tw-hooks"
+include = ["tw_hooks/py.typed"]
+classifiers = [
+  "Framework :: Pytest",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: Unix",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python",
+  "Topic :: Utilities",
+]
+keywords = []
+
+# end-user dependencies --------------------------------------------------------
+[tool.poetry.dependencies]
+python = "^3.8"
+tasklib = "*"
+bubop = { path = "/home/berger/src_/bubop", develop = true }
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+black = { version = "*", allow-prereleases = true }
+isort = "*"
+mock = "*"
+pdbpp = "^0.10.3"
+identify = "^2.4.0"
+mypy = "*"
+pre-commit = "^2.16.0"
+pyfakefs = "^4.5.3"
+pylint = "^2.12.2"
+pyright = "*"
+types-PyYAML = "^6.0.1"
+types-python-dateutil = "^2.8.3"
+
+coverage = "^6.2"
+coveralls = "^3.3.1"
+pycln = "^1.3.1"
+check-jsonschema = "^0.14.3"
+
+[tool.poetry.scripts]
+install-hook-shims = "tw_hooks.scripts.install_hook_shims:main"
+
+# isort ------------------------------------------------------------------------
+[tool.isort]
+include_trailing_comma = true
+line_length = 95
+multi_line_output = 3
+profile = "black"
+
+# black ------------------------------------------------------------------------
+[tool.black]
+preview = true
+line-length = 95
+target-version = ['py38', 'py39']
+include = '\.pyi?$'
+
+# mypy -------------------------------------------------------------------------
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+no_implicit_reexport = false
+
+[[tool.mypy.overrides]]
+module = ["tqdm", "pytest", "pexpect"]
+ignore_missing_imports = true
+
+# pylint -----------------------------------------------------------------------
+[tool.pylint]
+[tool.pylint.master]
+persistent = "yes"
+suggestion-mode = "yes"
+unsafe-load-any-extension = "no"
+ignore = "VCS"
+
+[tool.pylint.messages_control]
+disable = "C0330,C0326,C0103,W0613,R0201,R1720,R1705,W0104,C0301"
+
+[tool.pylint.refactoring]
+max-nested-blocks = 5
+never-returning-functions = "sys.exit,argparse.parse_error"
+
+[tool.pylint.similarities]
+ignore-comments = "yes"
+ignore-docstrings = "no"
+ignore-imports = "yes"
+# ignore-signatures=no
+min-similarity-lines = 4
+
+[tool.pylint.format]
+max-line-length = 95
+ignore-invalid-name = true
+max-module-lines = 500
+
+[tool.pylint.string]
+check-quote-consistency = "yes"
+
+# pyright ----------------------------------------------------------------------
+[tool.pyright]
+reportMissingImports = true
+reportMissingTypeStubs = false
+pythonVersion = "3.8"
+pythonPlatform = "Linux"
+
+# pytest -----------------------------------------------------------------------
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+
+# build-system -----------------------------------------------------------------
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+# vim: tw=80
