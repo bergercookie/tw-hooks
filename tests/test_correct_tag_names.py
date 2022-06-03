@@ -1,5 +1,7 @@
 from typing import Any, Dict, List
+
 from pytest import fixture
+
 from tw_hooks.base_hooks.on_modify_hook import OnModifyHook
 from tw_hooks.hooks.correct_tag_names import CorrectTagNames
 from tw_hooks.utils import use_json
@@ -11,11 +13,13 @@ def hook0() -> OnModifyHook:
     c = CorrectTagNames(tag_mappings=tag_mappings)
     return c
 
+
 @fixture
 def hook1() -> OnModifyHook:
     tag_mappings = {"movie": "movies"}
     c = CorrectTagNames(tag_mappings=tag_mappings)
     return c
+
 
 @fixture
 def hook2() -> OnModifyHook:

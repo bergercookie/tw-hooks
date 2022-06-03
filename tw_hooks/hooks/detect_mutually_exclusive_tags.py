@@ -1,10 +1,10 @@
 import json
-from typing import List, Literal, Set, cast
+from typing import List, Set, cast
+
 from tw_hooks import OnModifyHook
 from tw_hooks.base_hooks.on_add_hook import OnAddHook
-from tw_hooks.utils import get_map_from_environ
 from tw_hooks.types import ListOfTagsList, Retcode, SerTask
-
+from tw_hooks.utils import get_map_from_environ
 
 envvar = "TW_INCOMPATIBLE_TAG_SETS"
 

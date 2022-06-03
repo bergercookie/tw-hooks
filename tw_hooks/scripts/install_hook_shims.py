@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
+import importlib.util
+import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from importlib import import_module
 from pathlib import Path
 from typing import Dict, Sequence, Set, Type
-import importlib.util
-import sys
 
 from bubop import valid_path
 from bubop.fs import valid_path
 from bubop.logging import logger
 from bubop.string import format_dict, format_list
 
-from tw_hooks.hooks import import_concrete_hooks
 from tw_hooks.base_hooks import BaseHook, OnAddHook, OnExitHook, OnLaunchHook, OnModifyHook
+from tw_hooks.hooks import import_concrete_hooks
 
 # By default this will find all the implementations in this package. If the user wants to
 # include their own hook classes, they'll have to specify the module paths in the
@@ -82,9 +82,7 @@ def main():
         'Install a custom hook defined in .../dir/mod/hook_name.py. "dir" should be in your PYTHONPATH': (
             "-r mod.hook_name"
         ),
-        'List all the available hooks and exit': (
-            "--list-hooks"
-        )
+        "List all the available hooks and exit": "--list-hooks",
     }
     parser.epilog = f'Usage examples:\n{"=" * 15}\n\n' + "\n".join(
         (f"- {k}\n  {executable} {v}\n" for k, v in usecases.items())

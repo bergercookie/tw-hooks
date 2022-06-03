@@ -1,9 +1,9 @@
 import json
-import subprocess
 import os
+import subprocess
+
 from tw_hooks import OnModifyHook
 from tw_hooks.types import Retcode, SerTask
-
 
 envvar = "TW_I3STATUS_RS_DBUS_NAME"
 
@@ -67,10 +67,7 @@ class PostLatestSTartToI3Status(OnModifyHook):
                 err = proc.stderr.decode("utf-8")
             else:
                 err = ""
-            self.log(
-                f"Failed to send started task.\n\nstdout: {out}\n\nstderr:"
-                f" {err}"
-            )
+            self.log(f"Failed to send started task.\n\nstdout: {out}\n\nstderr: {err}")
 
         return 0
 

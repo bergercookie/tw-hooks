@@ -1,11 +1,14 @@
 from typing import List
+
 from pytest import fixture
 
 from tw_hooks.types import SerTask
 
 
 @fixture
-def on_modify_changed_title(on_modify_changed_title_orig, on_modify_changed_title_mod) -> List[str]:
+def on_modify_changed_title(
+    on_modify_changed_title_orig, on_modify_changed_title_mod
+) -> List[str]:
     return [on_modify_changed_title_orig, on_modify_changed_title_mod]
 
 
@@ -41,4 +44,3 @@ def on_modify_changed_title_mod_dict() -> SerTask:
         "uuid": "c236dff8-76bb-4a8c-a075-0657c633c018",
         "tags": ["movie", "wor"],
     }
-

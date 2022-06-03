@@ -1,5 +1,4 @@
 from abc import abstractmethod
-import re
 from typing import Dict, List, final
 
 from tw_hooks.base_hooks.base_hook import BaseHook

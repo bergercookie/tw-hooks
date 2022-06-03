@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, List, final
+from typing import List, final
 
 from tw_hooks.base_hooks.base_hook import BaseHook
 from tw_hooks.types import SerTask

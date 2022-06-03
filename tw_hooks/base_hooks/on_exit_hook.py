@@ -1,9 +1,9 @@
 from abc import abstractmethod
-from typing import Dict, List, final
-from tw_hooks.types import SerTask
-from tw_hooks.utils import stdin_lines_to_json, use_json
+from typing import List, final
 
 from tw_hooks.base_hooks.base_hook import BaseHook
+from tw_hooks.types import SerTask
+from tw_hooks.utils import stdin_lines_to_json, use_json
 
 
 class OnExitHook(BaseHook):
@@ -13,7 +13,6 @@ class OnExitHook(BaseHook):
     def on_exit(self, stdin_lines: List[str]):
         items = stdin_lines_to_json(stdin_lines)
         return self._on_exit(items)
-
 
     @abstractmethod
     def _on_exit(self, added_modified_tasks: List[SerTask]):

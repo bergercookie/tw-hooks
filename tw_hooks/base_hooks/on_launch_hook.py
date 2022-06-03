@@ -6,6 +6,7 @@ from tw_hooks.base_hooks.base_hook import BaseHook
 
 class OnLaunchHook(BaseHook):
     """On launch hook base class."""
+
     @final
     def on_launch(self):
         return self._on_launch()
