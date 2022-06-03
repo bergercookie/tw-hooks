@@ -3,8 +3,8 @@
 If something is generic enough, make a PR to <https://github.com/bergercookie/bubop>
 """
 import json
-from json.decoder import JSONDecodeError
 import os
+from json.decoder import JSONDecodeError
 from typing import List, Union, cast
 
 from tw_hooks.types import ListOfTagsList, MapOfTags, TaskT
@@ -15,7 +15,7 @@ def _use_json(json_str: str):
         return {}
     else:
         try:
-            out =json.loads(json_str)
+            out = json.loads(json_str)
         except JSONDecodeError:
             out = json.loads(json_str.replace("'", '"'))
 

@@ -6,6 +6,7 @@ from importlib import import_module
 from pathlib import Path
 from typing import Dict, Sequence, Set, Type
 
+from bubop.classes import all_subclasses
 from bubop.fs import valid_path
 from bubop.logging import logger
 from bubop.string import format_dict, format_list
@@ -142,7 +143,7 @@ def main():
     # gather all the hooks --------------------------------------------------------------------
     hook_with_descriptions: Dict[str, Sequence[str]] = {}  # only for reporting to the user...
     for SomeBaseHook in hook_bases:
-        subclasses: Set[Type[BaseHook]] = _all_subclasses(SomeBaseHook)
+        subclasses: Set[Type[BaseHook]] = all_subclasses(SomeBaseHook)  # type: ignore # TODO?
         hooks_to_install[SomeBaseHook] = subclasses
         hook_with_descriptions[SomeBaseHook.name()] = [
             f"{Subclass.name()}: {Subclass.description()}" for Subclass in subclasses

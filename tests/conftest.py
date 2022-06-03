@@ -14,12 +14,12 @@ def on_modify_changed_title(
 
 @fixture
 def on_modify_changed_title_orig(on_modify_changed_title_orig_dict) -> str:
-    return f'{on_modify_changed_title_orig_dict}\n'
+    return f"{on_modify_changed_title_orig_dict}\n"
 
 
 @fixture
 def on_modify_changed_title_mod(on_modify_changed_title_mod_dict) -> str:
-    return f'{on_modify_changed_title_mod_dict}\n'
+    return f"{on_modify_changed_title_mod_dict}\n"
 
 
 @fixture
