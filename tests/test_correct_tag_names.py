@@ -51,7 +51,10 @@ def test_change_one_tag(
     hook1.on_modify(on_modify_changed_title)
     captured = capsys.readouterr()
     on_modify_changed_title_mod_dict["tags"] = ["movies", "wor"]
-    assert _use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
+    out: str = captured.out
+    parts = out.split("\n", maxsplit=1)
+    assert parts[0].startswith("[CorrectTagNames] Correcting")
+    assert _use_json(parts[1].strip()) == on_modify_changed_title_mod_dict
     assert captured.err == ""
 
 
@@ -67,5 +70,10 @@ def test_change_multiple_tag(
     hook2.on_modify(on_modify_changed_title)
     captured = capsys.readouterr()
     on_modify_changed_title_mod_dict["tags"] = ["movies", "work"]
-    assert _use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
+    out: str = captured.out
+    parts = out.split("\n", maxsplit=2)
+    assert parts[0].startswith("[CorrectTagNames] Correcting")
+    assert parts[1].startswith("[CorrectTagNames] Correcting")
+    assert _use_json(parts[2].strip()) == on_modify_changed_title_mod_dict
+
     assert captured.err == ""

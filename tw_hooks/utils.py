@@ -3,6 +3,7 @@
 If something is generic enough, make a PR to <https://github.com/bergercookie/bubop>
 """
 import json
+from json.decoder import JSONDecodeError
 import os
 from typing import List, Union, cast
 
@@ -13,7 +14,12 @@ def _use_json(json_str: str):
     if json_str == "":
         return {}
     else:
-        return json.loads(json_str)
+        try:
+            out =json.loads(json_str)
+        except JSONDecodeError:
+            out = json.loads(json_str.replace("'", '"'))
+
+        return out
 
 
 def stdin_lines_to_json(stdin_lines: List[str]) -> List[SerTask]:
