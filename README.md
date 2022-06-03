@@ -23,11 +23,14 @@ TODO Register app in coveralls - set COVERALLS_REPO_TOKEN
 
 ## Description
 
-TODO
+This is a Work-In-Progress collection of [Taskwarrior
+hooks](https://taskwarrior.org/docs/hooks_guide.html) that I use in my
+day-to-day workflows. The hooks are structured as classes under the
+`tw_hooks/hooks` directory.
 
 ## Installation
 
-Install it from `PyPI`:
+[TODO] Install it from `PyPI`:
 
 ```sh
 pip3 install --user --upgrade tw_hooks
@@ -39,9 +42,39 @@ To get the latest version install directly from source:
 pip3 install --user --upgrade git+https://github.com/bergercookie/tw-hooks
 ```
 
-## Example - Usage
+After the installation, you have to run the `install_hook_shims` executable
+(which by this point should be in your `$PATH`). This will create shims (wrapper
+scripts) under `~/.task/hooks` in order to register all the hooks with
+Taskwarrior.
 
-TODO
+## Structure of a Hook
+
+The purpose of this package is to facilitate the development and distribution of
+Taskwarrior hooks. To this purpose it includes a hook autodetection mechanism
+both for the hooks in this repo as well as the hooks that you specify in the
+`TW_ADDITIONAL_HOOKS` environment variable before the call to
+`install_hook_shims`.
+
+This is an example of a taskwarrior hook in this format:
+
+```python
+from tw_hooks import OnExitHook
+class WarnOnTaskCongestion(OnExitHook):
+    """Warn the user if there are too many tasks."""
+    def on_exit(self, _):
+      # ...
+      return 0
+```
+
+TODO If you add the path to the script above in `TW_ADDITIONAL_HOOKS` before
+executing `install_hook_shims`, then it will be automatically installed and
+executed `on-exit` by Taskwarrior
+
+```sh
+t add +test kalimera
+Created task 719.
+[WarnOnTaskCongestion] Too many due:today tasks [threshold=9]
+```
 
 ## Miscellaneous
 

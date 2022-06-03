@@ -30,7 +30,7 @@ class WarnOnTaskCongestion(OnExitHook):
         self._re_pat = rf"{self._date_field}:\"\d+"
         self._warn_threshold = warn_threshold
 
-    def on_exit(self, _):
+    def _on_exit(self, _):
         # I can't just invoke the taskwarrior executable. There's some sort of lock being
         # acquired so a potential subprocess.run call is blocking forever.
         # I have to manually parse pending.data

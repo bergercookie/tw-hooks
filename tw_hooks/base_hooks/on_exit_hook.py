@@ -1,5 +1,7 @@
 from abc import abstractmethod
-from typing import Dict
+from typing import Dict, List, final
+from tw_hooks.types import SerTask
+from tw_hooks.utils import stdin_lines_to_json, use_json
 
 from tw_hooks.base_hooks.base_hook import BaseHook
 
@@ -7,19 +9,22 @@ from tw_hooks.base_hooks.base_hook import BaseHook
 class OnExitHook(BaseHook):
     """On exit hook base class."""
 
+    @final
+    def on_exit(self, stdin_lines: List[str]):
+        items = stdin_lines_to_json(stdin_lines)
+        return self._on_exit(items)
+
+
     @abstractmethod
-    def on_exit(self, added_modified_tasks: Dict[str, str]):
+    def _on_exit(self, added_modified_tasks: List[SerTask]):
         pass
 
     @classmethod
     def entrypoint(cls) -> str:
-        """Name of the method that is meant to be the entrypoint for this hook."""
         return "on_exit"
-
 
     @classmethod
     def require_stdin(cls) -> bool:
-        """True if this Hook requires access to the standard input."""
         return True
 
     @classmethod

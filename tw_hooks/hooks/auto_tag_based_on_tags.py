@@ -1,0 +1,49 @@
+import json
+import re
+from tw_hooks import OnModifyHook
+from tw_hooks.base_hooks.on_add_hook import OnAddHook
+from tw_hooks.utils import get_map_from_environ
+from tw_hooks.types import SerTask, TagsMap
+
+
+envvar = "TW_AUTO_TAG_MAPPINGS"
+
+
+class AutoTagBasedOnTags(OnModifyHook, OnAddHook):
+    """
+    Inspect the list of tags in the added/modified tags provided and add additional tags if required.
+
+    To specify a mapping, add something like this to your shell rc file:
+
+        TW_AUTO_TAG_MAPPINGS='{"python": "programming", "cpp": "programming", "github.*": "programming"}'
+    """
+
+    def __init__(self, tag_mappings: TagsMap = get_map_from_environ(envvar)):
+        self._tag_mappings = tag_mappings
+
+    def _check_and_apply_extra_tags(self, task: SerTask):
+        if "tags" not in task:
+            return
+
+        tags = task["tags"]
+        old_tags = [t for t in tags]
+        for tag_pattern in self._tag_mappings.keys():
+            try:
+                if not any(re.match(tag_pattern, tag) for tag in tags):
+                    continue
+
+                new_tags = self._tag_mappings[tag_pattern]
+                tags.extend(new_tags)
+                if set(old_tags) != set(tags):
+                    self.log(f"Applying extra tags (due to pattern {tag_pattern}): {new_tags}")
+            except ValueError:
+                pass
+
+    def _on_modify(self, original_task: SerTask, modified_task: SerTask):
+        del original_task
+        self._check_and_apply_extra_tags(modified_task)
+        print(json.dumps(modified_task))
+
+    def _on_add(self, added_task: SerTask):
+        self._check_and_apply_extra_tags(added_task)
+        print(json.dumps(added_task))
