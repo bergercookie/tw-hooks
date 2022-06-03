@@ -1,15 +1,15 @@
 import json
 import os
-from typing import List
+from typing import List, Union
 
-from tw_hooks.types import SerTask, TagsMap
+from tw_hooks.types import ListOfTagsList, SerTask, MapOfTags
 
 
 def use_json(json_str: str):
     if json_str == "":
         return {}
     else:
-        return json.loads(json_str.replace("'", "\""))
+        return json.loads(json_str)
 
 def stdin_lines_to_json(stdin_lines: List[str]) -> List[SerTask]:
     out: List[SerTask] = []
@@ -18,7 +18,7 @@ def stdin_lines_to_json(stdin_lines: List[str]) -> List[SerTask]:
 
     return out
 
-def get_map_from_environ(envvar: str) -> TagsMap:
+def get_map_from_environ(envvar: str) -> Union[MapOfTags, ListOfTagsList]:
     val = os.environ.get(envvar)
     if val is None:
         return {}

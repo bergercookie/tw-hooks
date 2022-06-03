@@ -4,7 +4,6 @@
   <img src="https://raw.githubusercontent.com/bergercookie/tw-hooks/master/misc/logo.png"/>
 </p>
 
-
 TODO Register app in coveralls - set COVERALLS_REPO_TOKEN
 
 <a href="https://github.com/bergercookie/tw-hooks/actions" alt="CI">
@@ -95,6 +94,7 @@ t add +test kalimera
 Created task 719.
 [WarnOnTaskCongestion] Too many due:today tasks [threshold=9]
 ```
+
 ## Hooks API
 
 TODO
