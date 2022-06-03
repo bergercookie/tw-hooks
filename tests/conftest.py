@@ -2,7 +2,7 @@ from typing import List
 
 from pytest import fixture
 
-from tw_hooks.types import SerTask
+from tw_hooks.types import TaskT
 
 
 @fixture
@@ -23,7 +23,7 @@ def on_modify_changed_title_mod(on_modify_changed_title_mod_dict) -> str:
 
 
 @fixture
-def on_modify_changed_title_orig_dict() -> SerTask:
+def on_modify_changed_title_orig_dict() -> TaskT:
     return {
         "description": "kalimera kalimera kalimera",
         "entry": "20220602T212503Z",
@@ -35,7 +35,7 @@ def on_modify_changed_title_orig_dict() -> SerTask:
 
 
 @fixture
-def on_modify_changed_title_mod_dict() -> SerTask:
+def on_modify_changed_title_mod_dict() -> TaskT:
     return {
         "description": "kalimera kalimera kalimera kalimera",
         "entry": "20220602T212503Z",

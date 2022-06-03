@@ -3,7 +3,7 @@ from typing import cast
 
 from tw_hooks import OnModifyHook
 from tw_hooks.base_hooks.on_add_hook import OnAddHook
-from tw_hooks.types import MapOfTags, SerTask
+from tw_hooks.types import MapOfTags, TaskT
 from tw_hooks.utils import get_json_from_environ
 
 envvar = "TW_CORRECT_TAG_MAPPINGS"
@@ -20,7 +20,7 @@ class CorrectTagNames(OnModifyHook, OnAddHook):
     def __init__(self, tag_mappings=get_json_from_environ(envvar)):
         self._tag_mappings = cast(MapOfTags, tag_mappings)
 
-    def _correct_tags(self, task: SerTask):
+    def _correct_tags(self, task: TaskT):
         if "tags" not in task:
             return
 
@@ -33,11 +33,11 @@ class CorrectTagNames(OnModifyHook, OnAddHook):
             except ValueError:
                 pass
 
-    def _on_modify(self, original_task: SerTask, modified_task: SerTask):
+    def _on_modify(self, original_task: TaskT, modified_task: TaskT):
         del original_task
         self._correct_tags(modified_task)
         print(json.dumps(modified_task))
 
-    def _on_add(self, added_task: SerTask):
+    def _on_add(self, added_task: TaskT):
         self._correct_tags(added_task)
         print(json.dumps(added_task))

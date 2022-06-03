@@ -3,7 +3,7 @@ import os
 import subprocess
 
 from tw_hooks import OnModifyHook
-from tw_hooks.types import Retcode, SerTask
+from tw_hooks.types import Retcode, TaskT
 
 envvar = "TW_I3STATUS_RS_DBUS_NAME"
 
@@ -22,7 +22,7 @@ class PostLatestSTartToI3Status(OnModifyHook):
     def __init__(self, dbus_name=os.environ.get(envvar)):
         self._dbus_name: str = dbus_name if dbus_name else ""
 
-    def _detect_start_of_task(self, task: SerTask) -> bool:
+    def _detect_start_of_task(self, task: TaskT) -> bool:
         """Return True if task is marked as started, false otherwise
 
         I don't care whether the task was alredy started or not.
@@ -71,7 +71,7 @@ class PostLatestSTartToI3Status(OnModifyHook):
 
         return 0
 
-    def _on_modify(self, original_task: SerTask, modified_task: SerTask):
+    def _on_modify(self, original_task: TaskT, modified_task: TaskT):
         del original_task
         ret = 0
         if self._detect_start_of_task(modified_task):

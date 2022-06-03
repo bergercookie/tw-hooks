@@ -3,7 +3,7 @@ from typing import List, Set, cast
 
 from tw_hooks import OnModifyHook
 from tw_hooks.base_hooks.on_add_hook import OnAddHook
-from tw_hooks.types import ListOfTagsList, Retcode, SerTask
+from tw_hooks.types import ListOfTagsList, Retcode, TaskT
 from tw_hooks.utils import get_json_from_environ
 
 envvar = "TW_INCOMPATIBLE_TAG_SETS"
@@ -28,7 +28,7 @@ class DetectMutuallyExclusiveTags(OnModifyHook, OnAddHook):
             )
         self._tag_sets: List[Set[str]] = [set(li) for li in cast(ListOfTagsList, tag_sets)]
 
-    def _detect_incompatible_tags(self, task: SerTask) -> Retcode:
+    def _detect_incompatible_tags(self, task: TaskT) -> Retcode:
         if "tags" not in task:
             return 0
 
@@ -40,13 +40,13 @@ class DetectMutuallyExclusiveTags(OnModifyHook, OnAddHook):
 
         return 0
 
-    def _on_modify(self, original_task: SerTask, modified_task: SerTask) -> Retcode:
+    def _on_modify(self, original_task: TaskT, modified_task: TaskT) -> Retcode:
         del original_task
         ret = self._detect_incompatible_tags(modified_task)
         print(json.dumps(modified_task))
         return ret
 
-    def _on_add(self, added_task: SerTask) -> Retcode:
+    def _on_add(self, added_task: TaskT) -> Retcode:
         ret = self._detect_incompatible_tags(added_task)
         print(json.dumps(added_task))
         return ret

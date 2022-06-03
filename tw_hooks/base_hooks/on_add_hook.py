@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import List, final
 
 from tw_hooks.base_hooks.base_hook import BaseHook
-from tw_hooks.types import SerTask
+from tw_hooks.types import TaskT
 from tw_hooks.utils import stdin_lines_to_json
 
 
@@ -15,7 +15,7 @@ class OnAddHook(BaseHook):
         return self._on_add(stdin_lines_to_json(stdin_lines)[0])
 
     @abstractmethod
-    def _on_add(self, added_task: SerTask):
+    def _on_add(self, added_task: TaskT):
         """Implement this in your hook."""
 
     @classmethod

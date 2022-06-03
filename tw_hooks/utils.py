@@ -7,7 +7,7 @@ from json.decoder import JSONDecodeError
 import os
 from typing import List, Union, cast
 
-from tw_hooks.types import ListOfTagsList, MapOfTags, SerTask
+from tw_hooks.types import ListOfTagsList, MapOfTags, TaskT
 
 
 def _use_json(json_str: str):
@@ -22,12 +22,12 @@ def _use_json(json_str: str):
         return out
 
 
-def stdin_lines_to_json(stdin_lines: List[str]) -> List[SerTask]:
+def stdin_lines_to_json(stdin_lines: List[str]) -> List[TaskT]:
     """
     Parse all  the lines from stdin and return them as a list of strings, each one
     corresponding to a single task.
     """
-    out: List[SerTask] = []
+    out: List[TaskT] = []
     for line in stdin_lines:
         out.append(_use_json(line.strip()))
 
