@@ -64,7 +64,7 @@ jobs:
           poetry run coverage run -m pytest --doctest-modules
           poetry run coverage report
       - name: Coveralls
-        run: poetry run coveralls
+        run: poetry run coveralls --service=github
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
