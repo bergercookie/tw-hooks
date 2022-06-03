@@ -9,11 +9,12 @@ class OnLaunchHook(BaseHook):
 
     @final
     def on_launch(self):
+        """Entrypoint - to be called by the Hook shim."""
         return self._on_launch()
 
     @abstractmethod
     def _on_launch(self):
-        pass
+        """Implement this in your hook."""
 
     @classmethod
     def entrypoint(cls) -> str:

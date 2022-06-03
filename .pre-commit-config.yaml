@@ -12,6 +12,7 @@ repos:
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: ".*svg"
       - id: mixed-line-ending
       - id: trailing-whitespace
       # - id: check-symlinks
@@ -27,6 +28,7 @@ repos:
     rev: "v0.11.0"
     hooks:
       - id: markdownlint
+        exclude: ^.github/
         entry: mdl -r ~MD033,~MD013
   - repo: local
     hooks:
@@ -63,13 +65,13 @@ repos:
         language: system
         pass_filenames: true
         types_or: [python, pyi]
-      - id: Pylint check
-        name: pylint
-        entry: pylint
-        language: system
-        pass_filenames: true
-        types: [python]
-        exclude: ^tests/
+      # - id: Pylint check
+      #   name: pylint
+      #   entry: pylint
+      #   language: system
+      #   pass_filenames: true
+      #   types: [python]
+      #   exclude: ^tests/
       - id: isort
         name: Isort check
         entry: isort

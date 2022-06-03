@@ -4,7 +4,7 @@ from typing import List, Set, cast
 from tw_hooks import OnModifyHook
 from tw_hooks.base_hooks.on_add_hook import OnAddHook
 from tw_hooks.types import ListOfTagsList, Retcode, SerTask
-from tw_hooks.utils import get_map_from_environ
+from tw_hooks.utils import get_json_from_environ
 
 envvar = "TW_INCOMPATIBLE_TAG_SETS"
 
@@ -20,7 +20,7 @@ class DetectMutuallyExclusiveTags(OnModifyHook, OnAddHook):
         TW_INCOMPATIBLE_TAG_SETS='[("projectideas", "freetime")]'
     """
 
-    def __init__(self, tag_sets=get_map_from_environ(envvar)):
+    def __init__(self, tag_sets=get_json_from_environ(envvar)):
         if not isinstance(tag_sets, list):
             raise RuntimeError(
                 f"Parsed value from {envvar} doesn't contain a  list as expected but a"

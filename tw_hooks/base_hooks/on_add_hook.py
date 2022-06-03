@@ -3,7 +3,7 @@ from typing import List, final
 
 from tw_hooks.base_hooks.base_hook import BaseHook
 from tw_hooks.types import SerTask
-from tw_hooks.utils import stdin_lines_to_json, use_json
+from tw_hooks.utils import stdin_lines_to_json
 
 
 class OnAddHook(BaseHook):
@@ -11,11 +11,12 @@ class OnAddHook(BaseHook):
 
     @final
     def on_add(self, stdin_lines: List[str]):
+        """Entrypoint - to be called by the Hook shim."""
         return self._on_add(stdin_lines_to_json(stdin_lines)[0])
 
     @abstractmethod
     def _on_add(self, added_task: SerTask):
-        pass
+        """Implement this in your hook."""
 
     @classmethod
     def entrypoint(cls) -> str:

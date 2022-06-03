@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-
-import importlib.util
+"""Detect Taskwarrior hooks and register an executable shim for each one of them."""
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from importlib import import_module
 from pathlib import Path
 from typing import Dict, Sequence, Set, Type
 
-from bubop import valid_path
 from bubop.fs import valid_path
 from bubop.logging import logger
 from bubop.string import format_dict, format_list
@@ -20,12 +18,6 @@ from tw_hooks.hooks import import_concrete_hooks
 # TW_ADDITIONAL_HOOKS environment variable
 
 
-def all_subclasses(cls):
-    return set(cls.__subclasses__()).union(
-        [s for c in cls.__subclasses__() for s in all_subclasses(c)]
-    )
-
-
 HOOK_TEMPLATE = """#!/usr/bin/env python3
 
 import sys
@@ -36,7 +28,7 @@ sys.exit(obj.{class_entrypoint}({args}))
 """
 
 
-def build_shim(base_hook: Type[BaseHook], hook: Type[BaseHook]) -> str:
+def _build_shim(base_hook: Type[BaseHook], hook: Type[BaseHook]) -> str:
     return HOOK_TEMPLATE.format(
         class_name=hook.name(),
         class_entrypoint=base_hook.entrypoint(),
@@ -46,11 +38,12 @@ def build_shim(base_hook: Type[BaseHook], hook: Type[BaseHook]) -> str:
 
 
 def main():
+    """Main."""
     # parse CLI arguments ---------------------------------------------------------------------
     task_dir_default = Path.home() / ".task"
 
     parser = ArgumentParser(
-        "Install executable shims for all the registered hooks.",
+        __doc__,
         formatter_class=RawDescriptionHelpFormatter,
     )
     parser.add_argument(
@@ -149,7 +142,7 @@ def main():
     # gather all the hooks --------------------------------------------------------------------
     hook_with_descriptions: Dict[str, Sequence[str]] = {}  # only for reporting to the user...
     for SomeBaseHook in hook_bases:
-        subclasses: Set[Type[BaseHook]] = all_subclasses(SomeBaseHook)
+        subclasses: Set[Type[BaseHook]] = _all_subclasses(SomeBaseHook)
         hooks_to_install[SomeBaseHook] = subclasses
         hook_with_descriptions[SomeBaseHook.name()] = [
             f"{Subclass.name()}: {Subclass.description()}" for Subclass in subclasses
@@ -169,17 +162,19 @@ def main():
             break
     else:
         logger.warning("No shims to install.")
-        return 0
+        return
 
     # install a shim under the hooks directory for each hook implementation -------------------
     logger.info(f"Installing shim executables under {hooks_dir}")
     for SomeBaseHook, subclasses in hooks_to_install.items():
         for SomeHook in subclasses:
             logger.debug(f"Creating shim for {SomeHook.name()}.{SomeBaseHook.entrypoint()}")
-            shim_contents = build_shim(SomeBaseHook, SomeHook)
+            shim_contents = _build_shim(SomeBaseHook, SomeHook)
             shim_path = hooks_dir / f"{SomeBaseHook.shim_prefix()}-{SomeHook.dashed_name()}.py"
             shim_path.write_text(shim_contents)
             shim_path.chmod(mode=0o764)
+
+    return
 
 
 if __name__ == "__main__":

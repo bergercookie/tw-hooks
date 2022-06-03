@@ -5,7 +5,7 @@ from typing import cast
 from tw_hooks import OnModifyHook
 from tw_hooks.base_hooks.on_add_hook import OnAddHook
 from tw_hooks.types import MapOfTags, SerTask
-from tw_hooks.utils import get_map_from_environ
+from tw_hooks.utils import get_json_from_environ
 
 envvar = "TW_AUTO_TAG_MAPPINGS"
 
@@ -19,7 +19,7 @@ class AutoTagBasedOnTags(OnModifyHook, OnAddHook):
         TW_AUTO_TAG_MAPPINGS='{"python": "programming", "cpp": "programming", "github.*": "programming"}'
     """
 
-    def __init__(self, tag_mappings=get_map_from_environ(envvar)):
+    def __init__(self, tag_mappings=get_json_from_environ(envvar)):
         self._tag_mappings = cast(MapOfTags, tag_mappings)
 
     def _check_and_apply_extra_tags(self, task: SerTask):
@@ -27,7 +27,7 @@ class AutoTagBasedOnTags(OnModifyHook, OnAddHook):
             return
 
         tags = task["tags"]
-        old_tags = [t for t in tags]
+        old_tags = list(tags)
         for tag_pattern in self._tag_mappings.keys():
             if not any(re.match(tag_pattern, tag) for tag in tags):
                 continue

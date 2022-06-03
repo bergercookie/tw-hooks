@@ -6,9 +6,6 @@ labels: bug
 assignees: ""
 ---
 
-❗❗❗ Please have a close look at the logs before posting them here. Amend the
-logs if you see your username or password there.
-
 ### Describe the bug
 
 A clear and concise description of what the bug is.

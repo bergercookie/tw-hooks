@@ -56,7 +56,7 @@ class WarnOnTaskCongestion(OnExitHook):
         count = 0
         for g in groups:
             ts = int(g.split('"')[-1])
-            if ts >= today_start and ts < tomorrow_start:
+            if today_start <= ts < tomorrow_start:
                 count += 1
                 if count > self._warn_threshold:
                     self.log(

@@ -4,7 +4,7 @@ from typing import cast
 from tw_hooks import OnModifyHook
 from tw_hooks.base_hooks.on_add_hook import OnAddHook
 from tw_hooks.types import MapOfTags, SerTask
-from tw_hooks.utils import get_map_from_environ
+from tw_hooks.utils import get_json_from_environ
 
 envvar = "TW_CORRECT_TAG_MAPPINGS"
 
@@ -17,7 +17,7 @@ class CorrectTagNames(OnModifyHook, OnAddHook):
         TW_CORRECT_TAG_MAPPINGS='{"movies": "movie", "wor": "work"}'
     """
 
-    def __init__(self, tag_mappings=get_map_from_environ(envvar)):
+    def __init__(self, tag_mappings=get_json_from_environ(envvar)):
         self._tag_mappings = cast(MapOfTags, tag_mappings)
 
     def _correct_tags(self, task: SerTask):

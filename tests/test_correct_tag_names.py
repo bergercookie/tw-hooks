@@ -4,7 +4,7 @@ from pytest import fixture
 
 from tw_hooks.base_hooks.on_modify_hook import OnModifyHook
 from tw_hooks.hooks.correct_tag_names import CorrectTagNames
-from tw_hooks.utils import use_json
+from tw_hooks.utils import _use_json
 
 
 @fixture
@@ -37,7 +37,7 @@ def test_nop(
     """If the tags are irrelevant then this hook should do nothing."""
     hook0.on_modify(on_modify_changed_title)
     captured = capsys.readouterr()
-    assert use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
+    assert _use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
     assert captured.err == ""
 
 
@@ -51,7 +51,7 @@ def test_change_one_tag(
     hook1.on_modify(on_modify_changed_title)
     captured = capsys.readouterr()
     on_modify_changed_title_mod_dict["tags"] = ["movies", "wor"]
-    assert use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
+    assert _use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
     assert captured.err == ""
 
 
@@ -67,5 +67,5 @@ def test_change_multiple_tag(
     hook2.on_modify(on_modify_changed_title)
     captured = capsys.readouterr()
     on_modify_changed_title_mod_dict["tags"] = ["movies", "work"]
-    assert use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
+    assert _use_json(captured.out.strip()) == on_modify_changed_title_mod_dict
     assert captured.err == ""

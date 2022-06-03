@@ -84,7 +84,7 @@ unsafe-load-any-extension = "no"
 ignore = "VCS"
 
 [tool.pylint.messages_control]
-disable = "C0330,C0326,C0103,W0613,R0201,R1720,R1705,W0104,C0301"
+disable = "C0103,W0613,R1720,R1705,W0104,C0301"
 
 [tool.pylint.refactoring]
 max-nested-blocks = 5
