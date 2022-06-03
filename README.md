@@ -1,6 +1,10 @@
-# tw_hooks
+# Taskwarrior Hooks
 
-TODO Add logo
+<p align="center">
+  <img src="https://raw.githubusercontent.com/bergercookie/tw-hooks/master/misc/logo.png"/>
+</p>
+
+
 TODO Register app in coveralls - set COVERALLS_REPO_TOKEN
 
 <a href="https://github.com/bergercookie/tw-hooks/actions" alt="CI">
@@ -23,14 +27,15 @@ TODO Register app in coveralls - set COVERALLS_REPO_TOKEN
 
 ## Description
 
-This is a Work-In-Progress collection of [Taskwarrior
+This is a collection of [Taskwarrior
 hooks](https://taskwarrior.org/docs/hooks_guide.html) that I use in my
-day-to-day workflows. The hooks are structured as classes under the
-`tw_hooks/hooks` directory.
+day-to-day workflows. It comes along a detection and easy-registration mechanism
+that should make it easy to develop and then distribute your own hooks. The
+hooks are structured as classes under the `tw_hooks/hooks` directory.
 
 ## Installation
 
-[TODO] Install it from `PyPI`:
+Install it from `PyPI`:
 
 ```sh
 pip3 install --user --upgrade tw_hooks
@@ -43,38 +48,60 @@ pip3 install --user --upgrade git+https://github.com/bergercookie/tw-hooks
 ```
 
 After the installation, you have to run the `install_hook_shims` executable
-(which by this point should be in your `$PATH`). This will create shims (wrapper
-scripts) under `~/.task/hooks` in order to register all the hooks with
-Taskwarrior.
+(which by this point should be in your `$PATH`). Running it will create shims
+(thin wrapper scripts) under `~/.task/hooks` in order to register all the hooks
+with Taskwarrior.
+
+## Available hooks
+
+Currently the following hooks are available:
+
+TODO
 
 ## Structure of a Hook
 
 The purpose of this package is to facilitate the development and distribution of
-Taskwarrior hooks. To this purpose it includes a hook autodetection mechanism
-both for the hooks in this repo as well as the hooks that you specify in the
-`TW_ADDITIONAL_HOOKS` environment variable before the call to
-`install_hook_shims`.
+Taskwarrior hooks. To this purpose `install_hook_shims` allows you to easily
+register your own hooks, without having to manually copy items over to the
+taskwarrior hooks location. `install_hook_shims` will install a shim which will
+call your hook automatically when required.
 
-This is an example of a taskwarrior hook in this format:
+This is an example of a Taskwarrior hook that will be executed on Taskwarrior
+exit:
 
 ```python
 from tw_hooks import OnExitHook
 class WarnOnTaskCongestion(OnExitHook):
     """Warn the user if there are too many tasks."""
-    def on_exit(self, _):
+    def _on_exit(self, _):  # <--- Mandatory to implement this signature
       # ...
       return 0
 ```
 
-TODO If you add the path to the script above in `TW_ADDITIONAL_HOOKS` before
-executing `install_hook_shims`, then it will be automatically installed and
-executed `on-exit` by Taskwarrior
+Assuming that this hook is in a module called `warn_on_task_congestion.py` and
+that the directory of this module is in your python path (e.g., by adding it
+explicitly to `$PYTHONPATH`), then you can run the following to register your
+hook with taskwarrior:
+
+```sh
+install_hook_shims -r warn_on_task_congestion
+```
+
+During your next Taskwarrior operation, if there are too many due:today tasks,
+you should see something like this:
 
 ```sh
 t add +test kalimera
 Created task 719.
 [WarnOnTaskCongestion] Too many due:today tasks [threshold=9]
 ```
+## Hooks API
+
+TODO
+
+## Usage instructions for `install_hook_shims`
+
+TODO
 
 ## Miscellaneous
 
@@ -85,6 +112,11 @@ Created task 719.
 If you find this tool useful, please [star it on
 Github](https://github.com/bergercookie/tw-hooks)
 and consider donating.
+
+## Support
+
+If something doesn't work, feel free to open an issue. You can also find me in
+the [#taskwarrior Libera Chat](https://matrix.to/#/#taskwarrior:libera.chat).
 
 ## TODO List
 
