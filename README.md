@@ -15,7 +15,7 @@
 <img src="https://img.shields.io/github/license/bergercookie/tw-hooks.svg" /></a>
 <a href="https://pypi.org/project/tw_hooks/" alt="pypi">
 <img src="https://img.shields.io/pypi/pyversions/tw-hooks.svg" /></a>
-<a href="https://badge.fury.io/py/tw_hooks">
+<a href="https://badge.fury.io/py/tw-hooks">
 <img src="https://badge.fury.io/py/tw_hooks.svg" alt="PyPI version" height="18"></a>
 <a href="https://pepy.tech/project/tw_hooks">
 <img alt="Downloads" src="https://pepy.tech/badge/tw_hooks"></a>
