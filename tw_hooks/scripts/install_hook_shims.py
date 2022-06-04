@@ -19,23 +19,38 @@ from tw_hooks.hooks import import_concrete_hooks
 # TW_ADDITIONAL_HOOKS environment variable
 
 
-HOOK_TEMPLATE = """#!/usr/bin/env python3
+HOOK_TEMPLATE = """
+#!/usr/bin/env python3
 
 import sys
 from {import_from} import {class_name}
 
 obj = {class_name}()
-sys.exit(obj.{class_entrypoint}({args}))
+{invoke_instructions}
+"""
+
+INVOKE_WITH_STDIN_TEMPLATE = """
+from tw_hooks.utils import parse_stdin_lines
+sys.exit(obj.{class_entrypoint}(parse_stdin_lines()))
+"""
+
+INVOKE_WITH_NO_ARGS_TEMPLATE = """
+sys.exit(obj.{class_entrypoint}())
 """
 
 
 def _build_shim(base_hook: Type[BaseHook], hook: Type[BaseHook]) -> str:
-    return HOOK_TEMPLATE.format(
-        class_name=hook.name(),
-        class_entrypoint=base_hook.entrypoint(),
-        import_from=hook.__module__,
-        args="sys.stdin.readlines()" if base_hook.require_stdin() else "",
+    invoke_instructions = (
+        INVOKE_WITH_STDIN_TEMPLATE
+        if base_hook.require_stdin()
+        else INVOKE_WITH_NO_ARGS_TEMPLATE
     )
+    invoke_instructions = invoke_instructions.format(class_entrypoint=base_hook.entrypoint())
+    return HOOK_TEMPLATE.format(
+        import_from=hook.__module__,
+        class_name=hook.name(),
+        invoke_instructions=invoke_instructions,
+    ).strip()
 
 
 def main():

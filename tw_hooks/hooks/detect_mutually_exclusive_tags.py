@@ -21,6 +21,8 @@ class DetectMutuallyExclusiveTags(OnModifyHook, OnAddHook):
     """
 
     def __init__(self, tag_sets=get_json_from_environ(envvar)):
+        if tag_sets is None:
+            tag_sets = []
         if not isinstance(tag_sets, list):
             raise RuntimeError(
                 f"Parsed value from {envvar} doesn't contain a  list as expected but a"

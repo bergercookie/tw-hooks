@@ -46,7 +46,7 @@ To get the latest version install directly from source:
 pip3 install --user --upgrade git+https://github.com/bergercookie/tw-hooks
 ```
 
-After the installation, you have to run the `install_hook_shims` executable
+After the installation, you have to run the `install-hooks-shims` executable
 (which by this point should be in your `$PATH`). Running it will create shims
 (thin wrapper scripts) under `~/.task/hooks` in order to register all the hooks
 with Taskwarrior.
@@ -55,14 +55,29 @@ with Taskwarrior.
 
 Currently the following hooks are available:
 
-TODO
+<table style="undefined;table-layout: fixed; width: 823px">
+<thead>
+  <tr>
+    <th>Hook</th>
+    <th>Description</th>
+    <th>Events</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><tt>AutoTagBasedOnTags</tt></td>
+    <td>Inspect the list of tags in the added/modified tasks provided and add additional tags if required.</td>
+    <td><tt>on-modify</tt>, <tt>on-add</tt></td>
+  </tr>
+</tbody>
+</table>
 
 ## Structure of a Hook
 
 The purpose of this package is to facilitate the development and distribution of
-Taskwarrior hooks. To this purpose `install_hook_shims` allows you to easily
+Taskwarrior hooks. To this purpose `install-hooks-shims` allows you to easily
 register your own hooks, without having to manually copy items over to the
-taskwarrior hooks location. `install_hook_shims` will install a shim which will
+taskwarrior hooks location. `install-hooks-shims` will install a shim which will
 call your hook automatically when required.
 
 This is an example of a Taskwarrior hook that will be executed on Taskwarrior
@@ -83,7 +98,7 @@ explicitly to `$PYTHONPATH`), then you can run the following to register your
 hook with taskwarrior:
 
 ```sh
-install_hook_shims -r warn_on_task_congestion
+install-hooks-shims -r warn_on_task_congestion
 ```
 
 During your next Taskwarrior operation, if there are too many due:today tasks,
@@ -99,9 +114,38 @@ Created task 719.
 
 TODO
 
-## Usage instructions for `install_hook_shims`
+## Usage instructions for `install-hooks-shims`
 
-TODO
+<!-- START sniff-and-replace install-hook-shims --help START -->
+
+```python
+usage: Detect Taskwarrior hooks and register an executable shim for each one of them.
+       [-h] [-t TASK_DIR] [-a] [-l]
+       [-r REGISTER_ADDITIONAL [REGISTER_ADDITIONAL ...]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TASK_DIR, --task-dir TASK_DIR
+                        Path to the taskwarrior main directory
+  -a, --all-hooks       Install shims for all the hooks
+  -l, --list-hooks      List the available hooks and exit
+  -r REGISTER_ADDITIONAL [REGISTER_ADDITIONAL ...], --register-additional REGISTER_ADDITIONAL [REGISTER_ADDITIONAL ...]
+
+Usage examples:
+===============
+
+- Install only the WarnOnTaskCongestion hook
+  install-hook-shims -r tw_hooks.hooks.warn_on_task_congestion
+
+- Install a custom hook defined in .../dir/mod/hook_name.py. "dir" should be in your PYTHONPATH
+  install-hook-shims -r mod.hook_name
+
+- List all the available hooks and exit
+  install-hook-shims --list-hooks
+
+```
+
+<!-- END sniff-and-replace -->
 
 ## Miscellaneous
 

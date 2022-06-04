@@ -20,6 +20,8 @@ class AutoTagBasedOnTags(OnModifyHook, OnAddHook):
     """
 
     def __init__(self, tag_mappings=get_json_from_environ(envvar)):
+        if tag_mappings is None:
+            tag_mappings = {}
         self._tag_mappings = cast(MapOfTags, tag_mappings)
 
     def _check_and_apply_extra_tags(self, task: TaskT):
