@@ -163,8 +163,11 @@ optional arguments:
 Usage examples:
 ===============
 
-- Install only the WarnOnTaskCongestion hook
+- Install only the WarnOnTaskCongestion hook (assuming you've installed tw_hooks with e.g., pip3)
   install-hook-shims -r tw_hooks.hooks.warn_on_task_congestion
+
+- Install all the available hooks from this repo (assuming you've installed tw_hooks with e.g., pip3)
+  install-hook-shims --all-hooks
 
 - Install a custom hook defined in .../dir/mod/hook_name.py. "dir" should be in your PYTHONPATH
   install-hook-shims -r mod.hook_name

@@ -85,8 +85,11 @@ def main():
 
     executable = Path(sys.argv[0]).stem
     usecases = {
-        "Install only the WarnOnTaskCongestion hook": (
+        "Install only the WarnOnTaskCongestion hook (assuming you've installed tw_hooks with e.g., pip3)": (
             "-r tw_hooks.hooks.warn_on_task_congestion"
+        ),
+        "Install all the available hooks from this repo (assuming you've installed tw_hooks with e.g., pip3)": (
+            "--all-hooks"
         ),
         'Install a custom hook defined in .../dir/mod/hook_name.py. "dir" should be in your PYTHONPATH': (
             "-r mod.hook_name"
