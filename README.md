@@ -17,7 +17,7 @@
 <img src="https://img.shields.io/pypi/pyversions/tw-hooks.svg" /></a>
 <a href="https://badge.fury.io/py/tw-hooks">
 <img src="https://badge.fury.io/py/tw_hooks.svg" alt="PyPI version" height="18"></a>
-<a href="https://pepy.tech/project/tw_hooks">
+<a href="https://pepy.tech/project/tw-hooks">
 <img alt="Downloads" src="https://pepy.tech/badge/tw_hooks"></a>
 <a href="https://github.com/psf/black">
 <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
