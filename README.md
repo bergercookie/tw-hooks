@@ -4,8 +4,6 @@
   <img src="https://raw.githubusercontent.com/bergercookie/tw-hooks/master/misc/logo.png"/>
 </p>
 
-TODO Register app in coveralls - set COVERALLS_REPO_TOKEN
-
 <a href="https://github.com/bergercookie/tw-hooks/actions" alt="CI">
 <img src="https://github.com/bergercookie/tw-hooks/actions/workflows/ci.yml/badge.svg" /></a>
 <a href="https://github.com/pre-commit/pre-commit">
@@ -53,7 +51,7 @@ with Taskwarrior.
 
 ## Available hooks
 
-Currently the following hooks are available:
+Currently the following hooks are available out-of-the-box:
 
 <table style="undefined;table-layout: fixed; width: 823px">
 <thead>
@@ -66,8 +64,28 @@ Currently the following hooks are available:
 <tbody>
   <tr>
     <td><tt>AutoTagBasedOnTags</tt></td>
-    <td>Inspect the list of tags in the added/modified tasks provided and add additional tags if required.</td>
+    <td>Inspect the list of tags in the added/modified tasks provided and add additional tags if required</td>
     <td><tt>on-modify</tt>, <tt>on-add</tt></td>
+  </tr>
+  <tr>
+    <td><tt>CorrectTagNames</tt></td>
+    <td>Change tag names based on a predefined lookup table</td>
+    <td><tt>on-modify</tt>, <tt>on-add</tt></td>
+  </tr>
+  <tr>
+    <td><tt>DetectMutuallyExclusiveTags</tt></td>
+    <td>See whether the user has specified an incompatible combination of tags</td>
+    <td><tt>on-modify</tt>, <tt>on-add</tt></td>
+  </tr>
+  <tr>
+    <td><tt>PostLatestStartToI3Status</tt></td>
+    <td>When a task is started, send the title of the task to i3status-rs via DBus</td>
+    <td><tt>on-modify</tt></td>
+  </tr>
+  <tr>
+    <td><tt>WarnOnTaskCongestion</tt></td>
+    <td>Warn the user if there are too many tasks (due:today)</td>
+    <td><tt>on-exit</tt></td>
   </tr>
 </tbody>
 </table>
@@ -112,7 +130,18 @@ Created task 719.
 
 ## Hooks API
 
-TODO
+Subclass one of the following base hooks, and your method is going to be called
+during that event:
+
+- [`OnAddHook`](https://github.com/bergercookie/tw-hooks/blob/master/tw_hooks/base_hooks/on_add_hook.py)
+  - Implement the `_on_add(self, added_task: TaskT)` method.
+- [`OnExitHook`](https://github.com/bergercookie/tw-hooks/blob/master/tw_hooks/base_hooks/on_exit_hook.py)
+  - Implement the `_on_exit(self, added_modified_tasks: List[TaskT])` method.
+- [`OnLaunchHook`](https://github.com/bergercookie/tw-hooks/blob/master/tw_hooks/base_hooks/on_launch_hook.py)
+  - Implement the `_on_launch(self)` method.
+- [`OnModifyHook`](https://github.com/bergercookie/tw-hooks/blob/master/tw_hooks/base_hooks/on_modify_hook.py)
+  - Implement the `_on_modify(self, original_task: TaskT, modified_task: TaskT)`
+    method.
 
 ## Usage instructions for `install-hooks-shims`
 
@@ -150,6 +179,22 @@ Usage examples:
 ## Miscellaneous
 
 - [Contributing Guide](CONTRIBUTING.md)
+
+## FAQ
+
+- Why should I use this over raw taskwarrior hooks?
+  - Because this package does the heavy lifting pre-processing the input tasks
+    from the command line. It does so in a robust manner making sure it does
+    the right thing regardless of weather one or two commands are provided and
+    being robust to errors (e.g., `utf-8` decoding errors).
+  - It gives you a class-oriented approach and lets you install multiple hooks
+    from the same class, thus allowing these hooks to share common
+    configuration.
+  - It also allows you to keep all your hooks together and keep
+    them as a package in some other place in your filesystem, e.g., in your
+    dotfiles and automatically adds the right glue-code so that Taskwarrior your
+    scripts without having to explicitly place it in `~/.task/hooks` or
+    symlinking it.
 
 ## Self Promotion
 

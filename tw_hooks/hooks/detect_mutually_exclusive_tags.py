@@ -11,8 +11,7 @@ envvar = "TW_INCOMPATIBLE_TAG_SETS"
 
 class DetectMutuallyExclusiveTags(OnModifyHook, OnAddHook):
     """
-    Inspect the list of tags in the added/modified tasks and see whether the user has specified
-    an incompatible combination of tags.
+    Inspect the list of tags in the added/modified tasks and see whether the user has specified an incompatible combination of tags.
 
     To specify a mapping of tags that don't work well with each other, add a variable like the
     following in your shell RC file:
