@@ -23,7 +23,13 @@ HOOK_TEMPLATE = """
 #!/usr/bin/env python3
 
 import sys
-from {import_from} import {class_name}
+# Make this robust in case e.g., the user is running inside a virtualenv and tw_hooks is not
+# installed in there.
+try:
+    from {import_from} import {class_name}
+except ModuleNotFoundError:
+    print("Can't import {class_name} hook")
+    sys.exit(0)
 
 obj = {class_name}()
 {invoke_instructions}

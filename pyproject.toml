@@ -25,7 +25,6 @@ keywords = []
 # end-user dependencies --------------------------------------------------------
 [tool.poetry.dependencies]
 python = "^3.8"
-tasklib = "*"
 bubop = "0.1.8"
 
 [tool.poetry.dev-dependencies]
