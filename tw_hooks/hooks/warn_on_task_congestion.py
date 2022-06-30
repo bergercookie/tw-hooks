@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Union
 
@@ -43,9 +43,7 @@ class WarnOnTaskCongestion(OnExitHook):
         today_start = int(
             datetime(year=today.year, month=today.month, day=today.day).timestamp()
         )
-        tomorrow_start = int(
-            datetime(year=today.year, month=today.month, day=today.day + 1).timestamp()
-        )
+        tomorrow_start = int((today + timedelta(days=1)).timestamp())
 
         conts = self._pending_data.read_text(errors="ignore")
         filter_ = f"{self._date_field}:{self._date}"
