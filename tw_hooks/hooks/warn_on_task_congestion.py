@@ -27,7 +27,7 @@ class WarnOnTaskCongestion(OnExitHook):
 
         self._date_field = date_field
         self._date = "today"
-        self._re_pat = rf"{self._date_field}:\"\d+"
+        self._re_pat = rf"({self._date_field}:\"\d+).*" + "]"
         self._warn_threshold = warn_threshold
 
     def _on_exit(self, _):
@@ -40,20 +40,20 @@ class WarnOnTaskCongestion(OnExitHook):
 
         # compute range of timestamps which corresponds to "today"
         today = datetime.today()
-        today_start = int(
-            datetime(year=today.year, month=today.month, day=today.day).timestamp()
-        )
+        today = datetime(year=today.year, month=today.month, day=today.day)
+        today_start = int(today.timestamp())
         tomorrow_start = int((today + timedelta(days=1)).timestamp())
 
         conts = self._pending_data.read_text(errors="ignore")
         filter_ = f"{self._date_field}:{self._date}"
-        groups = re.findall(pattern=self._re_pat, string=conts)
+        re_iter = re.finditer(pattern=self._re_pat, string=conts)
 
         # count all the tasks whose selected date is today. If that surpasses our threshold
         # break and issue warning
         count = 0
-        for g in groups:
-            ts = int(g.split('"')[-1])
+        for g in re_iter:
+            g_ = g.group(1)
+            ts = int(g_.split('"')[-1])
             if today_start <= ts < tomorrow_start:
                 count += 1
                 if count > self._warn_threshold:
@@ -62,5 +62,4 @@ class WarnOnTaskCongestion(OnExitHook):
                         " Consider reducing them to avoid noise in your reports"
                     )
                     break
-
         return 0
