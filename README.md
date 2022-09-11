@@ -190,10 +190,13 @@ Usage examples:
     from the command line. It does so in a robust manner making sure it does
     the right thing regardless of weather one or two commands are provided and
     being robust to errors (e.g., `utf-8` decoding errors).
+  - It takes care to make the hooks fail safely even if it can't find required
+    modules (e.g., if you try invoking `task` from inside a `virtualenv` where
+    `tw-hooks` is not importable.
   - It gives you a class-oriented approach and lets you install multiple hooks
     from the same class, thus allowing these hooks to share common
     configuration.
-  - It also allows you to keep all your hooks together and keep
+  - It allows you to keep all your hooks together and keep
     them as a package in some other place in your filesystem, e.g., in your
     dotfiles and automatically adds the right glue-code so that Taskwarrior your
     scripts without having to explicitly place it in `~/.task/hooks` or

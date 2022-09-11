@@ -2,8 +2,7 @@ import json
 import re
 from typing import cast
 
-from tw_hooks import OnModifyHook
-from tw_hooks.base_hooks.on_add_hook import OnAddHook
+from tw_hooks import OnAddHook, OnModifyHook
 from tw_hooks.types import MapOfTags, TaskT
 from tw_hooks.utils import get_json_from_environ
 

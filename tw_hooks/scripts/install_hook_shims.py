@@ -23,12 +23,16 @@ HOOK_TEMPLATE = """
 #!/usr/bin/env python3
 
 import sys
+from pathlib import Path
 # Make this robust in case e.g., the user is running inside a virtualenv and tw_hooks is not
 # installed in there.
 try:
     from {import_from} import {class_name}
 except ModuleNotFoundError:
     print("Can't import {class_name} hook")
+    json_allowed = Path(__file__).name.startswith("on-add") or Path(__file__).name.startswith("on-modify")
+    if json_allowed:
+        print(sys.stdin.read())
     sys.exit(0)
 
 obj = {class_name}()

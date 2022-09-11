@@ -30,7 +30,7 @@ class PostLatestSTartToI3Status(OnModifyHook):
         return "start" in task.keys()
 
     def _post_to_dbus(self, task) -> Retcode:
-        task_desc = task["description"]
+        task_desc = f'{task["uuid"][:8]} | {task["description"]}'
         if "annotations" in task:
             annotations = " | ".join(
                 annotation_dict["description"][:50] for annotation_dict in task["annotations"]
