@@ -18,9 +18,7 @@ def import_concrete_hooks():
             "AutoTagBasedOnTags",
             "CorrectTagNames",
             "DetectMutuallyExclusiveTags",
-            "HandleTagBundles",
             "PostLatestSTartToI3Status",
             "WarnOnTaskCongestion",
-            "GitCommit",
         ]
     )
