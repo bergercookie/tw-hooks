@@ -30,9 +30,23 @@ try:
     from {import_from} import {class_name}
 except ModuleNotFoundError:
     print("Can't import {class_name} hook")
-    json_allowed = Path(__file__).name.startswith("on-add") or Path(__file__).name.startswith("on-modify")
-    if json_allowed:
-        print(sys.stdin.read())
+
+    # We have to return some JSON that's compatible with the hooks API
+    # https://taskwarrior.org/docs/hooks/
+    name = Path(__file__).name
+    hook_type = "-".join(name.split("-")[:2])
+
+    stdin = sys.stdin.read().strip()
+
+    if hook_type == "on-add":
+        added_task = stdin
+        print(added_task)
+    elif hook_type == "on-modify":
+        modified_task = stdin.splitlines()[-1]
+        print(modified_task)
+    else:
+        pass
+
     sys.exit(0)
 
 obj = {class_name}()
