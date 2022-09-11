@@ -27,5 +27,9 @@ class OnAddHook(BaseHook):
         return True
 
     @classmethod
+    def produce_stdout(cls) -> bool:
+        return True
+
+    @classmethod
     def shim_prefix(cls) -> str:
         return "on-add"

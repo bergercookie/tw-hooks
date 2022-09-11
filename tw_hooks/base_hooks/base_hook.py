@@ -25,6 +25,14 @@ class BaseHook(ABC):
         """True if this Hook requires access to the standard input."""
 
     @classmethod
+    @abstractmethod
+    def produce_stdout(cls) -> bool:
+        """True if this Hook writes lines to the standard output
+
+        e.g., this is the case for the on-add hooks.
+        """
+
+    @classmethod
     def _get_subclass_name(cls) -> str:
         return cls.__name__
 

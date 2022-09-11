@@ -28,5 +28,9 @@ class OnExitHook(BaseHook):
         return True
 
     @classmethod
+    def produce_stdout(cls) -> bool:
+        return False
+
+    @classmethod
     def shim_prefix(cls) -> str:
         return "on-exit"
